@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -12,42 +12,32 @@ import {
   View
 } from 'react-native';
 
+import { Icon } from 'native-base';
+
+
 export default class weatherme extends Component {
+  getWeather() {
+    var url = `http://api.openweathermap.org/data/2.5/find?q=$barcelona&units=metric`
+    return fetch(url).then((response) => response.json());
+  }
+
+  setWeather() {
+    this.getWeather().then((response) => {
+      var result = response.list[0]
+    });
+    return <Text> {result.main.temp} </Text>;
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+      <View>
+        {this.setWeather()}
+        <Text>I'm a potato</Text>
+        }
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 AppRegistry.registerComponent('weatherme', () => weatherme);
